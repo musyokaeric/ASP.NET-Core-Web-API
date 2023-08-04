@@ -7,12 +7,25 @@ using Microsoft.OpenApi.Models;
 using NZWalks.API.Data;
 using NZWalks.API.Mappings;
 using NZWalks.API.Repositories;
+using Serilog;
 using System.Text;
 using static System.Net.WebRequestMethods;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// Injecting Serilog
+var logger = new LoggerConfiguration()
+    .WriteTo.Console() // logs to console
+    .WriteTo.File("Logs/NwWalks_logs.txt",rollingInterval: RollingInterval.Day) // logs to file
+    .MinimumLevel.Warning()
+    .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+
+
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
