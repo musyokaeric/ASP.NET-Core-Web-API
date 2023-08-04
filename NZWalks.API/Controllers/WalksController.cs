@@ -45,6 +45,10 @@ namespace NZWalks.API.Controllers
             [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) // pagination
         {
             var walks = await walkRepository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
+
+            // Create an exception
+            throw new Exception("This is a new exception");
+
             return Ok(mapper.Map<List<WalkDto>>(walks));
         }
 
